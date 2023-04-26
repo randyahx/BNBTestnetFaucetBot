@@ -1,7 +1,7 @@
 {
   "name": "faucetbot",
   "version": "1.0.0",
-  "description": "Discord bot that dispenses testnet ETH",
+  "description": "Discord bot that dispenses testnet BNB",
   "main": "index.js",
   "repository": "https://github.com/AlmostEfficient/FaucetBot.git",
   "author": "Abdullah Raza raza@cyleum.io",
@@ -13,17 +13,18 @@
     "@discordjs/rest": "^0.1.0-canary.0",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
-    "keyv": "^4.0.3"
+    "keyv": "^4.0.3",
+    "node": "^19.8.1"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0"
   },
-	"optionalDependencies": {
+  "optionalDependencies": {
     "@keyv/redis": "^2.1.2",
     "@ethereumjs/common": "^2.5.0",
     "@ethereumjs/tx": "^3.3.2",
     "axios": "^0.22.0",
     "ethers": "^5.4.7"
-	}
+  }
 }

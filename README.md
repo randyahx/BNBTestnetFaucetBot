@@ -44,5 +44,5 @@ You can change the following in the `config.json` file:
 * `amount`: how much to fund per request. Takes a string value. Set to `"0.1"` ETH by default.
 * `maxFeePerGas`: The maximum price (in wei) per unit of gas for transaction. Takes in a BigNumber. Set to `25000000000` (25 gwei) by default.
 * `activityType`: Discord activity for the bot. Options - `PLAYING`, `STREAMING`, `LISTENING`, `WATCHING`. Set to `WATCHING` by default.
-* `activityName`: Name of the activity. Set to `"Buildspace.so"` by default. This shows as "Watching Buildspace.so" in the bot's presence.
+* `activityName`: Name of the activity. Set to `"Discord-Faucet"` by default. This shows as "Watching Discord-Faucet" in the bot's presence.
 * `approvedRoles`: Role IDs for roles that do not have a cooldown (i.e. no waiting 1 hour b/w requests). Takes in an array of strings.
