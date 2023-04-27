@@ -15,6 +15,6 @@ module.exports = {
 			return interaction.reply('Error getting balance. Please check logs.');
 		}
 		const balanceShort = balance.toString().slice(0, balance.toString().indexOf('.') + 3);
-		return interaction.reply(`Pong! Provider: BSC Testnet. Current balance: ${balanceShort} BNB. Please use /faucet to request funds.\nDonate: ${FROM_ADDRESS}`);
+		return interaction.reply(`Provider: BSC Testnet. Current balance: ${balanceShort} BNB. Please use /faucet to request funds.\nDonate: ${FROM_ADDRESS}`);
 	},
 };

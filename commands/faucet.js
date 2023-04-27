@@ -1,4 +1,4 @@
-const { amount, infura } = require('../config.json');
+const { amount } = require('../config.json');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const sendViaAlchemy = require('../utils/sendViaPublicDataseed.js');
@@ -15,8 +15,7 @@ module.exports = {
 		const address = interaction.options.get('address').value.trim();
 
 		const reply =
-			// TODO: Change this to "Please wait for it to be mined" once Alchemy Notify is set up.
-			'Request sent to Nodereal. Please check the link to see if it\'s mined.';
+			'Request sent. Please check the link to see if it\'s mined.';
 
 		await interaction.reply(reply);
 

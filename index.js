@@ -51,8 +51,11 @@ client.on('interactionCreate', async interaction => {
 			const lastRequested = await keyv.get(interaction.user.id);
 			if (lastRequested) {
 				if (Date.now() - lastRequested < cooldown) {
-					const timeLeft = Math.floor(((cooldown - (Date.now() - lastRequested)) / 1000) / 60);
-					return interaction.reply(`You can only request funds once every 60 minutes. Please try again in ${timeLeft} minutes.`);
+					const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastRequested)) / 1000);
+					const hours = Math.floor(timeLeftInSeconds / 3600);
+					const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
+					const seconds = timeLeftInSeconds % 60;
+					return interaction.reply(`You can only request funds once every 60 minutes. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
 				}
 			}
 		}
