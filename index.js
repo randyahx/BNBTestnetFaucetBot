@@ -2,6 +2,7 @@ const { Client, Collection, Intents } = require('discord.js');
 const { token, cooldown, approvedRoles } = require('./config.json');
 const fs = require('fs');
 const isAddress = require('./utils/address');
+const getBalance = require('./utils/getBalance');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const Keyv = require('keyv');
 const keyv = new Keyv();
@@ -37,7 +38,10 @@ client.on('interactionCreate', async interaction => {
 		const address = interaction.options.get('address').value.trim();
 
 		if (!isAddress(address)) {
-			return interaction.reply('Please enter a valid Ethereum Address');
+			return interaction.reply('Please enter a valid BSC Address');
+		}
+		if (getBalance(address) > 1) {
+			return interaction.reply('You are not allowed to claim more tbnb if your balance is over 1 tbnb');
 		}
 
 		// If the last transaction was less than 15 seconds ago, disallow to prevent nonce reuse (no concurrent transactions ATM)

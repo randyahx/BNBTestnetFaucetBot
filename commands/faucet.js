@@ -1,7 +1,7 @@
 const { amount } = require('../config.json');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const sendViaAlchemy = require('../utils/sendViaPublicDataseed.js');
+const sendViaPublicDataseed = require('../utils/sendViaPublicDataseed.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ module.exports = {
 
 		await interaction.reply(reply);
 
-		const request = await sendViaAlchemy(address, amount);
+		const request = await sendViaPublicDataseed(address, amount);
 
 		if (request.status === 'success') {
 			const embed = new MessageEmbed()
