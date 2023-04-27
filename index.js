@@ -40,15 +40,12 @@ client.on('interactionCreate', async interaction => {
 		if (!isAddress(address)) {
 			return interaction.reply('Please enter a valid BSC Address');
 		}
-		if (getBalance(address) > 1) {
-			return interaction.reply('You are not allowed to claim more tbnb if your balance is over 1 tbnb');
-		}
 
 		// If the last transaction was less than 15 seconds ago, disallow to prevent nonce reuse (no concurrent transactions ATM)
 		const lastTx = await keyv.get('lastTx');
 		if (lastTx > Date.now() - 15000) {
 			const timeLeft = 15000 - (Date.now() - lastTx);
-			return interaction.reply(`Please wait 15 seconds between requests to prevent nonce issues. Try again in ${timeLeft / 1000}s.`);
+			return interaction.reply(`Please wait 15 seconds between requests. Try again in ${timeLeft / 1000}s.`);
 		}
 
 		if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
@@ -59,9 +56,12 @@ client.on('interactionCreate', async interaction => {
 					const hours = Math.floor(timeLeftInSeconds / 3600);
 					const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
 					const seconds = timeLeftInSeconds % 60;
-					return interaction.reply(`You can only request funds once every 60 minutes. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
+					return interaction.reply(`You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
 				}
 			}
+		}
+		if (await getBalance(address) > 1) {
+			return interaction.reply('You are not allowed to claim more TBNB if your balance is over 1 TBNB');
 		}
 	}
 
