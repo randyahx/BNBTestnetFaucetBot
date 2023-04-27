@@ -5,7 +5,7 @@ const provider = new ethers.providers.JsonRpcProvider(BSC_TESTNET_RPC_URL);
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')
-		.setDescription('Replies with Pong!, configured provider, faucet balance and donation address.'),
+		.setDescription('Replies with configured provider, faucet balance and donation address.'),	
 	async execute(interaction) {
 		let balance;
 		try {

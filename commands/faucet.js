@@ -6,7 +6,7 @@ const sendViaPublicDataseed = require('../utils/sendViaPublicDataseed.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('faucet')
-		.setDescription('Request testnet funds from the faucet')
+		.setDescription('Request testnet funds from the faucet. Limited to one request per day.')
 		.addStringOption(option =>
 			option.setName('address')
 				.setDescription('The address to request funds from the faucet')
