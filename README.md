@@ -1,5 +1,5 @@
 # FaucetBot
-This is a Discord bot that dispenses Rinkeby ETH. 
+This is a Discord bot that dispenses Testnet BNB. 
 
 Features:
 * Full control over the wallet
