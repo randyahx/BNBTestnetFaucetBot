@@ -2,13 +2,11 @@
 This is a Discord bot that dispenses Testnet BNB. 
 
 Features:
-* Full control over the wallet
-* Customisable funding amount
-* Customisable delay between requests  
-* Customisable per user cooldowns 
+* TBNB Faucet  
 * Balance check and donation alert
+* Customisable funding amount, delay between requests, faucet cooldowns, alert messages  
 
-![image](https://user-images.githubusercontent.com/42661870/136471444-b91a48f6-bc66-48ed-b502-d51a65156c59.png)
+![image]()
 
 # Requirements
 * Yarn
