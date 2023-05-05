@@ -25,10 +25,10 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setColor('#3BA55C')
 				.setDescription(`[View on Bscscan](https://testnet.bscscan.com/tx/${request.message})`);
-			return interaction.followUp({ content: `Transaction for ${amount} BNB created.`, embeds: [embed] });
+			return interaction.followUp({ content: `Transaction for ${amount} BNB created.`, embeds: [embed], ephemeral: true });
 		}
 		else {
-			return interaction.followUp(`Failed to send funds. Error: ${request.message}`);
+			return interaction.followUp({content: `Failed to send funds. Error: ${request.message}`, ephemeral: true});
 		}
 	},
 };
