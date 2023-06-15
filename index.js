@@ -68,7 +68,6 @@ client.on('interactionCreate', async interaction => {
 	}
 
 	try {
-		await command.execute(interaction);
 		if (command.data.name === 'faucet') {
 			// If not an approved role, set the last requested time
 			if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
@@ -76,6 +75,7 @@ client.on('interactionCreate', async interaction => {
 			}
 			await keyv.set('lastTx', Date.now());
 		}
+		await command.execute(interaction);
 	}
 	catch (error) {
 		console.error(error);
