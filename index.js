@@ -81,6 +81,7 @@ client.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
+	await new Promise(r => setTimeout(r, 3000));
 });
 
 for (const file of eventFiles) {
