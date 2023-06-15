@@ -28,11 +28,10 @@ for (const file of eventFiles) {
 
 client.on('interactionCreate', async interaction => {
 	// Add delay to prevent crashing
-	await new Promise(r => setTimeout(r, 500));
+	await new Promise(r => setTimeout(r, 1000));
 	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
-	const username = client.commands.get(interaction.user)
 
 	if (!command) return;
 
@@ -45,7 +44,7 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		// If the last transaction was less than 15 seconds ago, disallow to prevent nonce reuse (no concurrent transactions ATM)
-		const lastTx = await keyv.get(username);
+		const lastTx = await keyv.get(interaction.user.id);
 		if (lastTx > Date.now() - 15000) {
 			const timeLeft = 15000 - (Date.now() - lastTx);
 			return interaction.reply(`Please wait 15 seconds between requests. Try again in ${timeLeft / 1000}s.`);
@@ -74,7 +73,7 @@ client.on('interactionCreate', async interaction => {
 			if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
 				await keyv.set(interaction.user.id, Date.now());
 			}
-			await keyv.set(username, Date.now());
+			await keyv.set(interaction.user.id, Date.now());
 		}
 		await command.execute(interaction);
 	}
