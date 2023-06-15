@@ -25,7 +25,7 @@ for (const file of eventFiles) {
 	}
 }
 client.on('interactionCreate', async interaction => {
-	await new Promise(r => setTimeout(r, 500));
+	await new Promise(r => setTimeout(r, 2000));
 	if (!interaction.isCommand()) return;
 	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
