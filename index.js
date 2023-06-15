@@ -1,5 +1,5 @@
 const { Client, Collection, Intents } = require('discord.js');
-const { token, cooldown, approvedRoles } = require('./config.json');
+const { token, cooldown } = require('./config.json');
 const fs = require('fs');
 const isAddress = require('./utils/address');
 const getBalance = require('./utils/getBalance');
@@ -37,14 +37,9 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		const lastTx = map.get(interaction.user.id);
-		if (lastTx > Date.now() - 15000) {
-			const timeLeft = 15000 - (Date.now() - lastTx);
-			return interaction.reply(`Please wait 15 seconds between requests. Try again in ${timeLeft / 1000}s.`);
-		}
-		const lastRequested = map.get(interaction.user.id);
-		if (lastRequested) {
-			if (Date.now() - lastRequested < cooldown) {
-				const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastRequested)) / 1000);
+		if (lastTx) {
+			if (Date.now() - lastTx < cooldown) {
+				const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastTx)) / 1000);
 				const hours = Math.floor(timeLeftInSeconds / 3600);
 				const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
 				const seconds = timeLeftInSeconds % 60;
