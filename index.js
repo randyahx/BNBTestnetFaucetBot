@@ -25,7 +25,7 @@ for (const file of eventFiles) {
 	}
 }
 client.on('interactionCreate', async interaction => {
-	await new Promise(r => setTimeout(r, 1000));
+	await new Promise(r => setTimeout(r, 2000));
 	if (!interaction.isCommand()) return;
 	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
@@ -60,7 +60,6 @@ client.on('interactionCreate', async interaction => {
 		if (command.data.name === 'faucet') {
 			map.set(interaction.user.id, Date.now());
 		}
-		await new Promise(r => setTimeout(r, 1000));
 		await command.execute(interaction);
 	}
 	catch (error) {
