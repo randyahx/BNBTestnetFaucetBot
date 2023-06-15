@@ -4,54 +4,46 @@ const fs = require('fs');
 const isAddress = require('./utils/address');
 const getBalance = require('./utils/getBalance');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-const Keyv = require('keyv');
-const keyv = new Keyv();
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
+// Changed keyv to map
+const map = new Map();
+
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
-
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
-	}
-	else {
+	} else {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
 client.on('interactionCreate', async interaction => {
-	// Add delay to prevent crashing
 	await new Promise(r => setTimeout(r, 1000));
 	if (!interaction.isCommand()) return;
-
 	const command = client.commands.get(interaction.commandName);
-
 	if (!command) return;
 
-	// Rate limiting and cooldowns for faucet requests
 	if (command.data.name === 'faucet') {
 		const address = interaction.options.get('address').value.trim();
-
 		if (!isAddress(address)) {
 			return interaction.reply('Please enter a valid BSC Address');
 		}
 
-		// If the last transaction was less than 15 seconds ago, disallow to prevent nonce reuse (no concurrent transactions ATM)
-		const lastTx = await keyv.get(interaction.user.id);
+		const lastTx = map.get(interaction.user.id);
 		if (lastTx > Date.now() - 15000) {
 			const timeLeft = 15000 - (Date.now() - lastTx);
 			return interaction.reply(`Please wait 15 seconds between requests. Try again in ${timeLeft / 1000}s.`);
 		}
 
 		if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
-			const lastRequested = await keyv.get(interaction.user.id);
+			const lastRequested = map.get(interaction.user.id);
 			if (lastRequested) {
 				if (Date.now() - lastRequested < cooldown) {
 					const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastRequested)) / 1000);
@@ -69,11 +61,10 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		if (command.data.name === 'faucet') {
-			// If not an approved role, set the last requested time
 			if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
-				await keyv.set(interaction.user.id, Date.now());
+				map.set(interaction.user.id, Date.now());
 			}
-			await keyv.set(interaction.user.id, Date.now());
+			map.set(interaction.user.id, Date.now());
 		}
 		await new Promise(r => setTimeout(r, 500));
 		await command.execute(interaction);
@@ -88,8 +79,7 @@ for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
-	}
-	else {
+	} else {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
