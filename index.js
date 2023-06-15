@@ -58,12 +58,9 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		if (command.data.name === 'faucet') {
-			if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
-				map.set(interaction.user.id, Date.now());
-			}
 			map.set(interaction.user.id, Date.now());
 		}
-		await new Promise(r => setTimeout(r, 500));
+		await new Promise(r => setTimeout(r, 1000));
 		await command.execute(interaction);
 	}
 	catch (error) {
