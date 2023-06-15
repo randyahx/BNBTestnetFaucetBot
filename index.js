@@ -75,7 +75,7 @@ client.on('interactionCreate', async interaction => {
 			}
 			await keyv.set(interaction.user.id, Date.now());
 		}
-		await new Promise(r => setTimeout(r, 3000));
+		await new Promise(r => setTimeout(r, 500));
 		await command.execute(interaction);
 	}
 	catch (error) {
