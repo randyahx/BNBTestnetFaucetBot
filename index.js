@@ -41,17 +41,14 @@ client.on('interactionCreate', async interaction => {
 			const timeLeft = 15000 - (Date.now() - lastTx);
 			return interaction.reply(`Please wait 15 seconds between requests. Try again in ${timeLeft / 1000}s.`);
 		}
-
-		if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
-			const lastRequested = map.get(interaction.user.id);
-			if (lastRequested) {
-				if (Date.now() - lastRequested < cooldown) {
-					const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastRequested)) / 1000);
-					const hours = Math.floor(timeLeftInSeconds / 3600);
-					const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
-					const seconds = timeLeftInSeconds % 60;
-					return interaction.reply(`You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
-				}
+		const lastRequested = map.get(interaction.user.id);
+		if (lastRequested) {
+			if (Date.now() - lastRequested < cooldown) {
+				const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastRequested)) / 1000);
+				const hours = Math.floor(timeLeftInSeconds / 3600);
+				const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
+				const seconds = timeLeftInSeconds % 60;
+				return interaction.reply(`You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
 			}
 		}
 		if (await getBalance(address) > 1) {
