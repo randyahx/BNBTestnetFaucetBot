@@ -75,13 +75,13 @@ client.on('interactionCreate', async interaction => {
 			}
 			await keyv.set(interaction.user.id, Date.now());
 		}
+		await new Promise(r => setTimeout(r, 3000));
 		await command.execute(interaction);
 	}
 	catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-	await new Promise(r => setTimeout(r, 3000));
 });
 
 for (const file of eventFiles) {
