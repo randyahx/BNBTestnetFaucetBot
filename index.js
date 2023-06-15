@@ -74,7 +74,7 @@ client.on('interactionCreate', async interaction => {
 			if (!approvedRoles.some(role => interaction.member.roles.cache.has(role))) {
 				await keyv.set(interaction.user.id, Date.now());
 			}
-			await keyv.set('lastTx', Date.now());
+			await keyv.set(username, Date.now());
 		}
 		await command.execute(interaction);
 	}
