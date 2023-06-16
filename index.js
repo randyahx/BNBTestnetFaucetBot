@@ -25,7 +25,6 @@ for (const file of eventFiles) {
 	}
 }
 client.on('interactionCreate', async interaction => {
-	await new Promise(r => setTimeout(r, 2000));
 	if (!interaction.isCommand()) return;
 	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
@@ -59,7 +58,7 @@ client.on('interactionCreate', async interaction => {
 	}
 	catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
 
