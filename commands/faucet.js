@@ -35,6 +35,8 @@ module.exports = {
 			return interaction.followUp({ content: `Transaction for ${amount} BNB created.`, embeds: [embed], ephemeral: true });
 		}
 		else {
+			const reply = 'Failed to send funds. Please try again.'
+			await interaction.reply(reply)
 			return interaction.followUp({ content: `Failed to send funds. Please try again. Error: ${request.message}`, ephemeral: true });
 		}
 	},
