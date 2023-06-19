@@ -1,7 +1,7 @@
 const { amount } = require('../config.json');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { cooldowns } = require('../utils/cooldowns.js');
+const cooldowns = require('../utils/cooldowns.js');
 const sendViaPublicDataseed = require('../utils/sendViaPublicDataseed.js');
 
 module.exports = {
