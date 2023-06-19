@@ -1,5 +1,6 @@
 const { Client, Collection, Intents } = require('discord.js');
 const { token, cooldown } = require('./config.json');
+const { cooldowns } = require('./utils/cooldowns');
 const fs = require('fs');
 const isAddress = require('./utils/address');
 const getBalance = require('./utils/getBalance');
@@ -35,7 +36,7 @@ client.on('interactionCreate', async interaction => {
 			return interaction.reply('Please enter a valid BSC Address');
 		}
 
-		const lastTx = map.get(interaction.user.id);
+		const lastTx = cooldowns.getLastTx(interaction.user.id);
 		if (lastTx) {
 			if (Date.now() - lastTx < cooldown) {
 				const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastTx)) / 1000);
@@ -51,13 +52,11 @@ client.on('interactionCreate', async interaction => {
 	}
 
 	try {
-		if (command.data.name === 'faucet') {
-			map.set(interaction.user.id, Date.now());
-		}
 		await command.execute(interaction);
 	}
 	catch (error) {
 		console.error(error);
+		// await interaction.editReply({ content: 'Please wait 15 seconds before sending another command!', ephemeral: true });
 	}
 });
 
