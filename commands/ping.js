@@ -12,9 +12,9 @@ module.exports = {
 			balance = await ethers.utils.formatEther(await provider.getBalance(FROM_ADDRESS));
 		} catch (e) {
 			console.log(e);
-			return interaction.editReply('Error getting balance. Please check logs.');
+			return interaction.reply('Error getting balance. Please check logs.');
 		}
 		const balanceShort = balance.toString().slice(0, balance.toString().indexOf('.') + 3);
-		return interaction.editReply(`Provider: BSC Testnet. Current balance: ${balanceShort} BNB. Please use /faucet to request funds.\nDonate: ${FROM_ADDRESS}`);
+		return interaction.reply(`Provider: BSC Testnet. Current balance: ${balanceShort} BNB. Please use /faucet to request funds.\nDonate: ${FROM_ADDRESS}`);
 	},
 };
