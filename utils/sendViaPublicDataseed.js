@@ -19,7 +19,7 @@ module.exports = async (toAddress, amount) => {
 			value: amountInWei,
 			gas: gasAmount,
 			gasPrice: maxFeePerGas,
-			nonce: nonce,
+			nonce: nonce+1,
 			chainId: BSC_TESTNET_CHAIN_ID,
 		};
 		const signedTx = await web3.eth.accounts.signTransaction(transaction, PRIVATE_KEY);
