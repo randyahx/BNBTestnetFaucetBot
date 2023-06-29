@@ -26,7 +26,6 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
-	await interaction.deferReply()
 
 	if (command.data.name === 'faucet') {
 		const address = interaction.options.get('address').value.trim();
