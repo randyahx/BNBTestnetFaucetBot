@@ -31,7 +31,7 @@ client.on('interactionCreate', async interaction => {
 	if (command.data.name === 'faucet') {
 		const address = interaction.options.get('address').value.trim();
 		if (!isAddress(address)) {
-			return interaction.editReply('Please enter a valid BSC Address');
+			return interaction.reply('Please enter a valid BSC Address');
 		}
 
 		const lastTx = cooldowns.getLastTx(interaction.user.id);
@@ -41,11 +41,11 @@ client.on('interactionCreate', async interaction => {
 				const hours = Math.floor(timeLeftInSeconds / 3600);
 				const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
 				const seconds = timeLeftInSeconds % 60;
-				return interaction.editReply({ content: `You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`, ephemeral: true });
+				return interaction.reply({ content: `You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`, ephemeral: true });
 			}
 		}
 		if (await getBalance(address) > 1) {
-			return interaction.editReply({ content: 'You are not allowed to claim more TBNB if your balance is over 1 TBNB', ephemeral: true });
+			return interaction.reply({ content: 'You are not allowed to claim more TBNB if your balance is over 1 TBNB', ephemeral: true });
 		}
 	}
 
@@ -54,7 +54,7 @@ client.on('interactionCreate', async interaction => {
 	}
 	catch (error) {
 		console.error(error);
-		// await interaction.editReply({ content: 'Please wait 15 seconds before sending another command!', ephemeral: true });
+		// await interaction.reply({ content: 'Please wait 15 seconds before sending another command!', ephemeral: true });
 	}
 });
 
