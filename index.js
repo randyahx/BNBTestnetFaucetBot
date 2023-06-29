@@ -31,7 +31,7 @@ client.on('interactionCreate', async interaction => {
 	if (command.data.name === 'faucet') {
 		const address = interaction.options.get('address').value.trim();
 		if (!isAddress(address)) {
-			return interaction.editReply('Please enter a valid BSC Address');
+			return interaction.editReply({ content: 'Please enter a valid BSC Address', ephemeral: true });
 		}
 
 		const lastTx = cooldowns.getLastTx(interaction.user.id);

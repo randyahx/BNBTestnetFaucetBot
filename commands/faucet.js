@@ -31,11 +31,10 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setColor('#3BA55C')
 				.setDescription(`[View on Bscscan](https://testnet.bscscan.com/tx/${request.message})`);
-			return interaction.followUp({ content: `Transaction for ${amount} BNB created.`, embeds: [embed], ephemeral: true });
+			return interaction.editReply({ content: `Transaction for ${amount} BNB created.`, embeds: [embed], ephemeral: true });
 		}
 		else {
-			await interaction.editReply({ content: 'Failed to send funds. Please try again.', ephemeral: true })
-			return interaction.followUp({ content: `Failed to send funds. Please try again. Error: ${request.message}`, ephemeral: true });
+			return interaction.editReply({ content: 'Failed to send funds. Please try again.', ephemeral: true })
 		}
 	},
 };
