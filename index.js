@@ -40,11 +40,11 @@ client.on('interactionCreate', async interaction => {
 				const hours = Math.floor(timeLeftInSeconds / 3600);
 				const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
 				const seconds = timeLeftInSeconds % 60;
-				return interaction.reply(`You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
+				return interaction.reply({ content: `You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`, ephemeral: true });
 			}
 		}
 		if (await getBalance(address) > 1) {
-			return interaction.reply('You are not allowed to claim more TBNB if your balance is over 1 TBNB');
+			return interaction.reply({ content: 'You are not allowed to claim more TBNB if your balance is over 1 TBNB', ephemeral: true });
 		}
 	}
 
