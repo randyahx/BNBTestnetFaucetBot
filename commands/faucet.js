@@ -27,14 +27,14 @@ module.exports = {
 			cooldowns.setLastTx(interaction.user.id, Date.now());
 			await (new Promise(resolve => setTimeout(resolve, 1000)));
 			// allow map to set lastTx
-			await interaction.reply({ content: 'Request sent. Please check the link to see if it\'s mined.', ephemeral: true });
+			await interaction.editReply({ content: 'Request sent. Please check the link to see if it\'s mined.', ephemeral: true });
 			const embed = new MessageEmbed()
 				.setColor('#3BA55C')
 				.setDescription(`[View on Bscscan](https://testnet.bscscan.com/tx/${request.message})`);
 			return interaction.followUp({ content: `Transaction for ${amount} BNB created.`, embeds: [embed], ephemeral: true });
 		}
 		else {
-			await interaction.reply({ content: 'Failed to send funds. Please try again.', ephemeral: true })
+			await interaction.editReply({ content: 'Failed to send funds. Please try again.', ephemeral: true })
 			return interaction.followUp({ content: `Failed to send funds. Please try again. Error: ${request.message}`, ephemeral: true });
 		}
 	},
