@@ -20,7 +20,7 @@ module.exports = {
 			if (request.status === 'success') {
 				break;
 			}
-			await (new Promise(resolve => setTimeout(resolve, 500)));
+			await (new Promise(resolve => setTimeout(resolve, 2000)));
 		}
 
 		if (request.status === 'success') {

@@ -12,14 +12,14 @@ module.exports = async (toAddress, amount) => {
 		if (balance < parseFloat(amount)) {
 			reject({ status: 'error', message: `I'm out of funds! Please donate: ${FROM_ADDRESS}` });
 		}
-		const nonce = await web3.eth.getTransactionCount(FROM_ADDRESS, 'latest');
+		const nonce = await web3.eth.getTransactionCount(FROM_ADDRESS, 'pending');
 		const amountInWei = web3.utils.toWei(amount);
 		const transaction = {
 			to: toAddress,
 			value: amountInWei,
 			gas: gasAmount,
 			gasPrice: maxFeePerGas,
-			nonce: nonce+1,
+			nonce: nonce,
 			chainId: BSC_TESTNET_CHAIN_ID,
 		};
 		const signedTx = await web3.eth.accounts.signTransaction(transaction, PRIVATE_KEY);
