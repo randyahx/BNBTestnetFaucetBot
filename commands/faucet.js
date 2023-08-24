@@ -19,8 +19,10 @@ module.exports = {
 			request = await sendViaPublicDataseed(address, amount);
 			if (request.status === 'success') {
 				break;
+			} else {
+				console.log(`Request failed at attempt ${i + 1}. Status: ${request.status}`);
 			}
-			await (new Promise(resolve => setTimeout(resolve, 2000)));
+			await (new Promise(resolve => setTimeout(resolve, 500)));
 		}
 
 		if (request.status === 'success') {
@@ -34,6 +36,7 @@ module.exports = {
 			return interaction.followUp({ content: `Transaction for ${amount} BNB created.`, embeds: [embed], ephemeral: true });
 		}
 		else {
+			console.log(`Request failed. Status: ${request.status}`);
 			await interaction.reply({ content: 'Failed to send funds. Please try again.', ephemeral: true })
 			return interaction.followUp({ content: `Failed to send funds. Please try again. Error: ${request.message}`, ephemeral: true });
 		}

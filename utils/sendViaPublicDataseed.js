@@ -14,11 +14,12 @@ module.exports = async (toAddress, amount) => {
 		}
 		const nonce = await web3.eth.getTransactionCount(FROM_ADDRESS, 'pending');
 		const amountInWei = web3.utils.toWei(amount);
+		const gas = await web3.eth.getGasPrice();
 		const transaction = {
 			to: toAddress,
 			value: amountInWei,
-			gas: gasAmount,
-			gasPrice: maxFeePerGas,
+			gas: 21000,
+			gasPrice: gas,
 			nonce: nonce,
 			chainId: BSC_TESTNET_CHAIN_ID,
 		};
