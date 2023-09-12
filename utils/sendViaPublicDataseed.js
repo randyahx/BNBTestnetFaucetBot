@@ -1,6 +1,11 @@
-const { BSC_TESTNET_RPC_URL, BSC_TESTNET_CHAIN_ID, PRIVATE_KEY, FROM_ADDRESS, maxFeePerGas, gasAmount } = require('../config.json');
+const { BSC_TESTNET_RPC_URL, BSC_TESTNET_CHAIN_ID, PRIVATE_KEY, FROM_ADDRESS, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, BALANCE_ALERT_THRESHOLD, gasAmount} = require('../config.json');
 const Web3 = require('web3');
 const web3 = new Web3(BSC_TESTNET_RPC_URL);
+
+const sendTelegramAlert = async (message) => {
+	const url = `http://api.telegram.com/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${message}`
+	await fetch(url);
+}
 
 module.exports = async (toAddress, amount) => {
 	console.log('Received new request from ', toAddress, 'for', amount);
@@ -12,13 +17,16 @@ module.exports = async (toAddress, amount) => {
 		if (balance < parseFloat(amount)) {
 			reject({ status: 'error', message: `I'm out of funds! Please donate: ${FROM_ADDRESS}` });
 		}
+		if (balance < BALANCE_ALERT_THRESHOLD) {
+			await sendTelegramAlert(`The balance for the discord faucet is currently below specified threshold. Current balance: ${balance}`)
+		}
 		const nonce = await web3.eth.getTransactionCount(FROM_ADDRESS, 'pending');
 		const amountInWei = web3.utils.toWei(amount);
 		const gas = await web3.eth.getGasPrice();
 		const transaction = {
 			to: toAddress,
 			value: amountInWei,
-			gas: 21000,
+			gas: gasAmount,
 			gasPrice: gas,
 			nonce: nonce,
 			chainId: BSC_TESTNET_CHAIN_ID,
