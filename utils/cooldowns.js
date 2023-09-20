@@ -1,18 +1,20 @@
-// cooldowns.js
-const { cooldown } = require('../config.json');
+const { Mutex } = require('async-mutex');
+const mutex = new Mutex();
 
-class Cooldowns {
-	constructor() {
-		this.map = new Map();
+// your existing code
+let lastTxMap = new Map();
+
+const getLastTx = (userId) => {
+	return lastTxMap.get(userId);
+};
+
+const setLastTx = async (userId, timestamp) => {
+	const release = await mutex.acquire();
+	try {
+		lastTxMap.set(userId, timestamp);
+	} finally {
+		release();
 	}
+};
 
-	getLastTx(userId) {
-		return this.map.get(userId);
-	}
-
-	setLastTx(userId, time) {
-		this.map.set(userId, time);
-	}
-}
-
-module.exports = new Cooldowns();
+module.exports = { getLastTx, setLastTx };

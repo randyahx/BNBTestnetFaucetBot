@@ -43,6 +43,7 @@ client.on('interactionCreate', async interaction => {
 				return interaction.reply({ content: `You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`, ephemeral: true });
 			}
 		}
+		await cooldowns.setLastTx(interaction.user.id, Date.now());
 		if (await getBalance(address) > 1) {
 			return interaction.reply({ content: 'You are not allowed to claim more TBNB if your balance is over 1 TBNB', ephemeral: true });
 		}

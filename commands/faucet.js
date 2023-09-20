@@ -26,8 +26,8 @@ module.exports = {
 		}
 
 		if (request.status === 'success') {
-			cooldowns.setLastTx(interaction.user.id, Date.now());
 			await (new Promise(resolve => setTimeout(resolve, 1000)));
+			await cooldowns.setLastTx(interaction.user.id, Date.now());
 			// allow map to set lastTx
 			await interaction.reply({ content: 'Request sent. Please check the link to see if it\'s mined.', ephemeral: true });
 			const embed = new MessageEmbed()
@@ -37,6 +37,7 @@ module.exports = {
 		}
 		else {
 			console.log(`Request failed. Status: ${request.status}`);
+			await cooldowns.setLastTx(interaction.user.id, null);
 			await interaction.reply({ content: 'Failed to send funds. Please try again.', ephemeral: true })
 			return interaction.followUp({ content: `Failed to send funds. Please try again. Error: ${request.message}`, ephemeral: true });
 		}
