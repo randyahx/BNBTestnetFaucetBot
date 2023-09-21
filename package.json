@@ -15,7 +15,8 @@
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
     "keyv": "^4.0.3",
-    "node": "^19.8.1"
+    "node": "^19.8.1",
+    "redis": "^4.6.9"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",

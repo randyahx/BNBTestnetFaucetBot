@@ -1,6 +1,8 @@
 const { Client, Collection, Intents } = require('discord.js');
 const { token, cooldown } = require('./config.json');
-const cooldowns = require('./utils/cooldowns');
+const { Mutex } = require('async-mutex');
+const mutex = new Mutex();
+const { getLastTx, setLastTx, redisClient } = require('./utils/cooldowns');
 const fs = require('fs');
 const isAddress = require('./utils/address');
 const getBalance = require('./utils/getBalance');
@@ -22,49 +24,56 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-	const command = client.commands.get(interaction.commandName);
-	if (!command) return;
+	try {
+		if (!interaction.isCommand()) return;
+		const command = client.commands.get(interaction.commandName);
+		if (!command) return;
 
-	if (command.data.name === 'faucet') {
-		const address = interaction.options.get('address').value.trim();
-		if (!isAddress(address)) {
-			return interaction.reply('Please enter a valid BSC Address');
-		}
+		await interaction.deferReply();
 
-		const lastTx = cooldowns.getLastTx(interaction.user.id);
-		if (lastTx) {
-			if (Date.now() - lastTx < cooldown) {
+		if (command.data.name === 'faucet') {
+			const address = interaction.options.get('address').value.trim();
+
+			if (!isAddress(address)) {
+				return interaction.editReply('Please enter a valid BSC Address');
+			}
+
+			let release = await mutex.acquire();
+			let lastTx = null
+			try {
+				lastTx = await redisClient.get(interaction.user.id)
+			} finally {
+				release()
+			}
+
+			if (lastTx && (Date.now() - lastTx < cooldown)) {
 				const timeLeftInSeconds = Math.floor((cooldown - (Date.now() - lastTx)) / 1000);
 				const hours = Math.floor(timeLeftInSeconds / 3600);
 				const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
 				const seconds = timeLeftInSeconds % 60;
-				return interaction.reply({ content: `You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`, ephemeral: true });
+				return interaction.editReply({ content: `You can only request funds once every day. Please try again in ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`, ephemeral: true });
+			}
+
+			release = await mutex.acquire();
+			try {
+				await redisClient.set(interaction.user.id, Date.now());
+			} finally {
+				release()
+			}
+
+			if (await getBalance(address) > 1) {
+				await redisClient.del(interaction.user.id);
+				await interaction.editReply('You are not allowed to claim more TBNB if your balance is over 1 TBNB.');
+				return
 			}
 		}
-		await cooldowns.setLastTx(interaction.user.id, Date.now());
-		if (await getBalance(address) > 1) {
-			return interaction.reply({ content: 'You are not allowed to claim more TBNB if your balance is over 1 TBNB', ephemeral: true });
-		}
-	}
 
-	try {
 		await command.execute(interaction);
-	}
-	catch (error) {
-		console.error(error);
-		// await interaction.reply({ content: 'Please wait 15 seconds before sending another command!', ephemeral: true });
+	} catch (error) {
+		interaction.editReply(`An error occurred while executing the command. Check your wallet to see if the transaction went through. ${error}`);
 	}
 });
-
-for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
-}
 
 client.login(token);
