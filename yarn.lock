@@ -511,7 +511,16 @@
   "resolved" "https://registry.npmjs.org/@redis/bloom/-/bloom-1.2.0.tgz"
   "version" "1.2.0"
 
-"@redis/client@^1.0.0", "@redis/client@1.5.10":
+"@redis/client@^1.0.0", "@redis/client@1.4.1":
+  "integrity" "sha512-3UAu3YIVi7pG/GjnEmFnS3wnPRofoiew5BpHRxA/FmJAyeUBMBg25AnnmnCi4BiR8i/QS3IZD4sgS7mTa0BC7g=="
+  "resolved" "https://registry.npmjs.org/@redis/client/-/client-1.4.1.tgz"
+  "version" "1.4.1"
+  dependencies:
+    "cluster-key-slot" "1.1.1"
+    "generic-pool" "3.9.0"
+    "yallist" "4.0.0"
+
+"@redis/client@1.5.10":
   "integrity" "sha512-JqhVeW6ojVL0Jp6MVISPrGRAx6OUZBaYTIMukkiGYvs5gxI8lEKgjSmu+6UvV+Mi/hXzlOAJXTjseeQu0ARnaA=="
   "resolved" "https://registry.npmjs.org/@redis/client/-/client-1.5.10.tgz"
   "version" "1.5.10"
@@ -1087,6 +1096,11 @@
   "integrity" "sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA=="
   "resolved" "https://registry.npmjs.org/cluster-key-slot/-/cluster-key-slot-1.1.2.tgz"
   "version" "1.1.2"
+
+"cluster-key-slot@1.1.1":
+  "integrity" "sha512-rwHwUfXL40Chm1r08yrhU3qpUvdVlgkKNeyeGPOxnW8/SyVDvgRaed/Uz54AqWNaTCAThlj6QAs3TZcKI0xDEw=="
+  "resolved" "https://registry.npmjs.org/cluster-key-slot/-/cluster-key-slot-1.1.1.tgz"
+  "version" "1.1.1"
 
 "color-convert@^1.9.0":
   "integrity" "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg=="

@@ -16,7 +16,8 @@
     "discord.js": "^13.1.0",
     "keyv": "^4.0.3",
     "node": "^19.8.1",
-    "redis": "^4.6.9"
+    "redis": "^4.6.9",
+    "@redis/client": "1.4.1"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
