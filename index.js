@@ -37,7 +37,7 @@ client.on('interactionCreate', async interaction => {
 			const address = interaction.options.get('address').value.trim();
 
 			if (!isAddress(address)) {
-				return interaction.editReply('Please enter a valid BSC Address');
+				return interaction.editReply({content: 'Please enter a valid BSC Address', ephemeral: true });
 			}
 
 			let release = await mutex.acquire();
@@ -65,14 +65,14 @@ client.on('interactionCreate', async interaction => {
 
 			if (await getBalance(address) > 1) {
 				await redisClient.del(interaction.user.id);
-				await interaction.editReply('You are not allowed to claim more TBNB if your balance is over 1 TBNB.');
+				await interaction.editReply({content: 'You are not allowed to claim more TBNB if your balance is over 1 TBNB.', ephemeral: true });
 				return
 			}
 		}
 
 		await command.execute(interaction);
 	} catch (error) {
-		interaction.editReply(`An error occurred while executing the command. Check your wallet to see if the transaction went through. ${error}`);
+		interaction.editReply({content: `An error occurred while executing the command. Check your wallet to see if the transaction went through. ${error}`, ephemeral: true });
 	}
 });
 
